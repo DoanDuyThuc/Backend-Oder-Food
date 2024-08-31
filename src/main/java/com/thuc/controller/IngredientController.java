@@ -67,7 +67,7 @@ public class IngredientController {
     public ResponseEntity<List<IngredientCategory>> getRestaurantIngredientCategory(
             @PathVariable Long id) throws Exception {
 
-        List<IngredientCategory> items = ingredientService.findIngredientCategoryByRestaurantId(id)
+        List<IngredientCategory> items = ingredientService.findIngredientCategoryByRestaurantId(id);
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 

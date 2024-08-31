@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,7 +41,7 @@ public class AdminFoodController {
             @RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserByJwtToken(jwt);
 
-        Restaurant restaurant = restaurantService.findRestaurantById(req.getRestaurantId());
+        Restaurant restaurant = restaurantService.getRestaurantByUserId(user.getId());
 
         Food food = foodService.createFood(req, req.getCategory(), restaurant);
 
@@ -49,7 +50,7 @@ public class AdminFoodController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<MessageResponse> deleteFood(
-            @RequestParam Long id,
+            @PathVariable Long id,
             @RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserByJwtToken(jwt);
 

@@ -16,7 +16,9 @@ import com.thuc.model.Order;
 import com.thuc.model.User;
 import com.thuc.request.AddCartItemRequest;
 import com.thuc.request.OrderRequest;
+import com.thuc.response.PaymentResponse;
 import com.thuc.service.OrderService;
+import com.thuc.service.PaymentService;
 import com.thuc.service.UserService;
 
 import java.util.List;
@@ -29,18 +31,22 @@ public class OrderController {
     private OrderService orderService;
 
     @Autowired
+    private PaymentService paymentService;
+
+    @Autowired
     private UserService userService;
 
     @PostMapping("/order")
-    public ResponseEntity<Order> createOrder(
+    public ResponseEntity<PaymentResponse> createOrder(
             @RequestBody OrderRequest req,
             @RequestHeader("Authorization") String jwt) throws Exception {
 
         User user = userService.findUserByJwtToken(jwt);
 
         Order order = orderService.createOrder(req, user);
+        PaymentResponse res = paymentService.createPaymentLink(order);
 
-        return new ResponseEntity<>(order, HttpStatus.CREATED);
+        return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 
     @GetMapping("/order/user")
